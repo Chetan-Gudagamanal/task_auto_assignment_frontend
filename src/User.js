@@ -94,7 +94,9 @@ export default function UserCard({
           {/* <p>'Assigned task '{userTask[2]}</p> */}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          <p>Assigned task Name: {userTask[3] ? userTask[3] : "None"}</p>
+          <p>
+            Assigned task Name: <h3>{userTask[3] ? userTask[3] : "None"}</h3>
+          </p>
         </Typography>
       </CardContent>
       <div sx={{ textAlign: "center" }}>
