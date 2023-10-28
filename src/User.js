@@ -22,18 +22,24 @@ export default function UserCard({
   const handleLogin = async (userId, index) => {
     setIsLoading(true);
     const data = await fetch(`${backend_url}/login/${userId}`, {
-      method: "GET",
+      method: "POST",
     });
-    const jsonData = await data.json().then((jsonData) => {
-      setloginArr((loginArr) => {
-        let newArr = loginArr;
-        newArr[index] = 1;
-        return newArr;
+    const jsonData = await data
+      .json()
+      .then((jsonData) => {
+        setloginArr((loginArr) => {
+          let newArr = loginArr;
+          newArr[index] = 1;
+          return newArr;
+        });
+        // loginArr[index] = 1;
+        fetchUserTaskData();
+        // setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
       });
-      // loginArr[index] = 1;
-      fetchUserTaskData();
-      // setIsLoading(false);
-    });
   };
 
   const updateLoginArray = (index) => {
@@ -51,12 +57,18 @@ export default function UserCard({
   const handleFinishTask = async (userId, taskId) => {
     setIsLoading(true);
     const data = await fetch(`${backend_url}/task_finish/${taskId}/${userId}`, {
-      method: "GET",
+      method: "PUT",
     });
-    const jsonData = await data.json().then((jsonData) => {
-      fetchUserTaskData();
-      // setIsLoading(false);
-    });
+    const jsonData = await data
+      .json()
+      .then((jsonData) => {
+        fetchUserTaskData();
+        // setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -94,9 +106,10 @@ export default function UserCard({
           {/* <p>'Assigned task '{userTask[2]}</p> */}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          <p>
-            Assigned task Name: <h3>{userTask[3] ? userTask[3] : "None"}</h3>
-          </p>
+          Assigned task Name:{" "}
+          <span style={{ fontWeight: "bolder" }}>
+            {userTask[3] ? userTask[3] : "None"}
+          </span>
         </Typography>
       </CardContent>
       <div sx={{ textAlign: "center" }}>

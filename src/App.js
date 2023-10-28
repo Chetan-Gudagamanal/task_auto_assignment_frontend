@@ -14,7 +14,7 @@ function App() {
 
   const fetchUserTaskData = async () => {
     setIsLoading(true);
-    const data = await fetch(`${backend_url}`, {
+    const data = await fetch(`${backend_url}/get_all_user_data`, {
       method: "GET",
     });
     const jsonData = await data.json().then((jsonData) => {
@@ -27,12 +27,18 @@ function App() {
   const reset_application_to_original_state = async () => {
     setIsLoading(true);
     const data = await fetch(`${backend_url}/reset_db`, {
-      method: "GET",
+      method: "PUT",
     });
-    const jsonData = await data.json().then((jsonData) => {
-      fetchUserTaskData();
-      // setIsLoading(false);
-    });
+    const jsonData = await data
+      .json()
+      .then((jsonData) => {
+        fetchUserTaskData();
+        // setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
